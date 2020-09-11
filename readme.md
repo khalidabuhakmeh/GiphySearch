@@ -19,8 +19,7 @@ dotnet run
 
 ### The App
 
-
-
+![App Running](./app-running.png)
 
 ### Resources
 
