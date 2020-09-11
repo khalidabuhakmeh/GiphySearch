@@ -1,0 +1,79 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1>Search Giphy</h1>
+    <form asp-page="Index" method="get">
+        <div class="input-group input-group-large">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">
+                    <i aria-hidden="true" class="fa fa-search"></i>
+                </span>
+            </div>
+            <input asp-for="Search"
+                   class="form-control"
+                   type="text"
+                   placeholder="Search"
+                   aria-label="Search"
+                   autocomplete="off"/>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container-fluid">
+    @if (Model.HasSearch)
+    {
+        <h1 class="my-4 font-weight-bold">
+            <i class="fa fa-list"></i>
+            Results for "@Model.Search"
+        </h1>
+
+        <div class="masonry-layout">
+            @foreach (var gif in Model.Result.Data)
+            {
+                <div class="masonry-layout-panel">
+                    <div class="masonry-layout-panel__content">
+                        <a href="@gif.BitlyUrl">
+                            <img src="@gif.Images.Original.Webp" alt="@gif.Caption"/>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <nav>
+            <ul class="pagination pagination-circle pagination-lg justify-content-end">
+                @if (Model.HasPrevious)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Page("Index", new {Model.Search, Offset = 0})">
+                            Start
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Page("Index", new {Model.Search, Offset = Model.Previous})">
+                            Previous
+                        </a>
+                    </li>
+                }
+                @if (Model.HasNext)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Page("Index", new {Model.Search, Offset = Model.Next})">
+                            Next
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+
+</div>
